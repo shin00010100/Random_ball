@@ -6,6 +6,13 @@ function getBallClass(num) {
   return "ball-green";
 }
 
+function createBall(num) {
+  const ball = document.createElement("div");
+  ball.className = `ball ${getBallClass(num)}`;
+  ball.textContent = num;
+  return ball;
+}
+
 const btn1 = document.getElementById("gacha");
 const result = document.getElementById("result");
 
@@ -19,14 +26,24 @@ btn1.addEventListener("click", () => {
   const numbers = Array.from(numberSet);
   numbers.sort((a, b) => a - b);
 
+  let bonusNum;
+  while (true) {
+    bonusNum = Math.floor(Math.random() * 45) + 1;
+    if (!numberSet.has(bonusNum)) {
+      break;
+    }
+  }
+
   result.innerHTML = "";
 
   numbers.forEach((num) => {
-    const ball = document.createElement("div");
-
-    ball.className = `ball ${getBallClass(num)}`;
-    ball.textContent = num;
-
-    result.appendChild(ball);
+    result.appendChild(createBall(num));
   });
+
+  const plus = document.createElement("span");
+  plus.className = "plus-sign";
+  plus.textContent = "+";
+  result.appendChild(plus);
+
+  result.appendChild(createBall(bonusNum));
 });
